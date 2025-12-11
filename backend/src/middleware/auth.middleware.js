@@ -6,6 +6,17 @@ export const protectRoute = async (req, res, next) => {
     const token = req.cookies.jwt;
 
     if (!token) {
+      if (process.env.NODE_ENV === "development") {
+        console.log("⚠️ DEV MODE: Bypassing Auth. Finding first user...");
+        const user = await User.findOne({});
+        if (user) {
+          req.user = user;
+          console.log(`✅ Logged in as: ${user.fullName}`);
+          return next();
+        } else {
+          console.log("❌ No users found to impersonate.");
+        }
+      }
       return res.status(401).json({ message: "Unauthorized - No Token Provided" });
     }
 

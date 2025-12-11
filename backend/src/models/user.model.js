@@ -4,17 +4,26 @@ const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: true,
       unique: true,
+      sparse: true, // Allows null/undefined to be unique
     },
     fullName: {
       type: String,
-      required: true,
     },
     password: {
       type: String,
-      required: true,
       minlength: 6,
+    },
+    phone: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    otp: {
+      type: String,
+    },
+    otpExpires: {
+      type: Date,
     },
     profilePic: {
       type: String,
